@@ -4,6 +4,7 @@ let yBolinha = 200;
 let diametro = 25;
 let raio = diametro / 2;
 
+
 //variaveis referentes a velocidade da bolinha
 let velocidadeXBolinha = 6;
 let velocidadeYBolinha = 6;
@@ -11,11 +12,23 @@ let velocidadeYBolinha = 6;
 //variaveis da raquete 
 let xRaquete = 5;
 let yRaquete = 150;
+
 let raqueteComprimento = 10;
 let raqueteAltura = 90;
 
+
+//variaveis da Raquete do Oponente 
+let xRaqueteOponente = 585;
+let yRaqueteOponente = 150;
+let velocidadeYOponente;
+
+
 //variavel colisao raquete
 let hit = false; 
+
+// Pontos da partida
+let pontosDoOponente = 0;
+let meusPontos = 0;
 
 
 function setup() {
@@ -28,12 +41,20 @@ function draw() {
   movimentaBolinha();
   colisaoBorda();
 
-  mostraRaquete();
+  mostraRaquete(xRaquete, yRaquete);
 
   movimentaRaquete();
 
   //verificaColisaoRaquete();
-  colisaoRaqueteLibrary();
+  colisaoRaqueteLibrary(xRaquete,yRaquete);
+  colisaoRaqueteLibrary(xRaqueteOponente, yRaqueteOponente);
+  mostraRaquete(xRaqueteOponente, yRaqueteOponente);
+
+  movimentaRaqueteOponente();
+
+  incluirPlacar();
+  marcaPontos();
+
 
   
 }
@@ -58,8 +79,8 @@ function colisaoBorda(){
   }
 }
 
-function mostraRaquete(){
-  rect(xRaquete,yRaquete,raqueteComprimento,raqueteAltura);
+function mostraRaquete(x, y){
+  rect(x,y,raqueteComprimento,raqueteAltura);
 
 }
 
@@ -81,12 +102,34 @@ function verificaColisaoRaquete(){            // &&Verificando se a bolinha esta
   }
 }
 
-function colisaoRaqueteLibrary(){
-  hit = collideRectCircle(xRaquete, yRaquete, raqueteComprimento, raqueteAltura, xBolinha, yBolinha, raio);
+function colisaoRaqueteLibrary(x,y){
+  hit = collideRectCircle(x, y, raqueteComprimento, raqueteAltura, xBolinha, yBolinha, raio);
 
   if (hit) {
     velocidadeXBolinha *= -1;
   }
+
 }
+  function movimentaRaqueteOponente(){
+    velocidadeYOponente = yBolinha - yRaqueteOponente - raqueteComprimento / 2 - 50;
+    yRaqueteOponente += velocidadeYOponente;
+  }
+
+  function incluirPlacar(){
+    fill(255);
+    text(meusPontos, 278, 26);
+    text(pontosDoOponente, 321, 26);
+  }
+
+  function marcaPontos(){
+    if(xBolinha > 587){
+      meusPontos += 1;
+    }
+    
+
+    if (xBolinha < 13) {
+      pontosDoOponente += 1;
+    }
+  }
 
 
