@@ -1,13 +1,23 @@
 //Variáveis referentes a bolinha
 let xBolinha = 300;
 let yBolinha = 200;
-let diametro = 25;
+let diametro = 23;
 let raio = diametro / 2;
 
+//Sounds of the game
+let raquetada;
+let ponto;
+let trilha ;
+
+function preload(){
+  trilha = loadSound("../trilha.mp3");
+  raquetada = loadSound("../raquetada.mp3");
+  ponto = loadSound("../ponto.mp3");
+}
 
 //variaveis referentes a velocidade da bolinha
-let velocidadeXBolinha = 6;
-let velocidadeYBolinha = 6;
+let velocidadeXBolinha = 8;
+let velocidadeYBolinha = 8;
 
 //variaveis da raquete 
 let xRaquete = 5;
@@ -33,6 +43,7 @@ let meusPontos = 0;
 
 function setup() {
   createCanvas(600, 400);
+  trilha.loop();
 }
 
 function draw() {
@@ -76,6 +87,7 @@ function colisaoBorda(){
   
    if(yBolinha + raio > height || yBolinha - raio < 0){
     velocidadeYBolinha *= -1;
+
   }
 }
 
@@ -99,6 +111,8 @@ function movimentaRaquete(){
 function verificaColisaoRaquete(){            // &&Verificando se a bolinha esta acima da raquete && verificando se a bolinha esta abaixo da raquete
   if(xBolinha - raio < xRaquete + raqueteComprimento && yBolinha - raio < yRaquete + raqueteAltura && yBolinha + raio > yRaquete){
     velocidadeXBolinha *= -1;
+    raquetada.play();
+
   }
 }
 
@@ -107,28 +121,45 @@ function colisaoRaqueteLibrary(x,y){
 
   if (hit) {
     velocidadeXBolinha *= -1;
+    raquetada.play();
+
   }
 
 }
   function movimentaRaqueteOponente(){
-    velocidadeYOponente = yBolinha - yRaqueteOponente - raqueteComprimento / 2 - 50;
+    velocidadeYOponente = yBolinha - yRaqueteOponente - raqueteComprimento / 2 - 90;
     yRaqueteOponente += velocidadeYOponente;
   }
 
   function incluirPlacar(){
+    stroke(255);
+    textSize(18);
+    textAlign(CENTER);
+
+    fill(color(231, 148, 0));
+    rect(150, 10, 40, 20);
+
     fill(255);
-    text(meusPontos, 278, 26);
-    text(pontosDoOponente, 321, 26);
+    text(meusPontos, 170, 26);
+
+    fill(color(231, 148, 0));
+    rect(450, 10, 40, 20);
+
+    fill(255);
+    text(pontosDoOponente, 470, 26);
   }
 
   function marcaPontos(){
-    if(xBolinha > 587){
+    if(xBolinha > 589){
       meusPontos += 1;
+      ponto.play();
     }
     
 
-    if (xBolinha < 13) {
+    if (xBolinha < 11) {
       pontosDoOponente += 1;
+      ponto.play();
+
     }
   }
 
