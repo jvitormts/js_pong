@@ -182,5 +182,3 @@ function colisaoRaqueteLibrary(x,y){
       }
     }
   }
-
-
